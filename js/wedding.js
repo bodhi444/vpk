@@ -306,40 +306,9 @@ const icsBtn = document.getElementById('icsDownloadBtn');
 if(icsBtn) icsBtn.addEventListener('click', generateICS);
 
 /* ════════════════════════════════════════
-   9. DOWNLOAD WEDDING CARD
+   9. DOWNLOAD WEDDING CARD (Removed)
 ════════════════════════════════════════ */
-async function downloadCard(btn) {
-  const CARD_URL = 'assets/wedding_card.pdf';
-  const FILENAME = 'Vidhul-Sreesaithya-WeddingCard.pdf';
-  const origHTML = btn.innerHTML;
-  btn.innerHTML='<i data-lucide="loader" width="15" height="15" class="spin-icon"></i> Downloading…';
-  btn.disabled=true;
-  try {
-    const res  = await fetch(CARD_URL);
-    if(!res.ok) throw new Error('not found');
-    const blob = await res.blob();
-    const file = new File([blob], FILENAME, { type:blob.type||'application/pdf' });
-    // Try native share on mobile (supports sharing files)
-    if(navigator.canShare && navigator.canShare({ files:[file] })) {
-      await navigator.share({ files:[file], title:'Vidhul & Sreesaithya — Wedding Card', text:'You\'re invited! ✨' });
-    } else {
-      // Fallback: programmatic download via blob URL
-      const url=URL.createObjectURL(blob);
-      const a=document.createElement('a'); a.href=url; a.download=FILENAME;
-      document.body.appendChild(a); a.click(); document.body.removeChild(a);
-      setTimeout(()=>URL.revokeObjectURL(url),60000);
-    }
-  } catch(e) {
-    // Final fallback: open image directly so user can long-press / save
-    window.open(CARD_URL, '_blank');
-  }
-  finally {
-    btn.innerHTML=origHTML; btn.disabled=false;
-    if(typeof lucide!=='undefined') lucide.createIcons();
-  }
-}
-const dlBtn=document.getElementById('downloadCardBtn');
-if(dlBtn) dlBtn.addEventListener('click', ()=>downloadCard(dlBtn));
+// Uses direct link in HTML
 
 /* ════════════════════════════════════════
    10. HAPTIC FEEDBACK
