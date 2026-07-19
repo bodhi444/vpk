@@ -348,3 +348,33 @@ if(typeof lucide!=='undefined') lucide.createIcons();
     glows.forEach(g => { g.style.opacity = String(0.6 + pct * 0.4); });
   }, { passive:true });
 })();
+
+/* ════════════════════════════════════════
+   14. RSVP FORM SUBMISSION
+════════════════════════════════════════ */
+function submitRSVP() {
+  const nameInput = document.getElementById('rsvp-name');
+  const guestsInput = document.getElementById('rsvp-guests');
+  const attendingRadio = document.querySelector('input[name="attending"]:checked');
+  
+  if (!nameInput || !nameInput.value.trim()) {
+    alert('Please enter your name');
+    return;
+  }
+  
+  const name = nameInput.value.trim();
+  const guests = guestsInput ? guestsInput.value : '1';
+  const attending = attendingRadio ? attendingRadio.value : 'yes';
+  
+  let text = `Hello! This is *${name}*.\n`;
+  if (attending === 'yes') {
+    text += `I will be attending the wedding with a total of *${guests}* guest(s). 🎉`;
+  } else {
+    text += `Regretfully, I won't be able to make it to the wedding. Wishing you the best!`;
+  }
+  
+  const encodedText = encodeURIComponent(text);
+  const whatsappUrl = `https://wa.me/919961680068?text=${encodedText}`;
+  window.open(whatsappUrl, '_blank');
+}
+window.submitRSVP = submitRSVP;

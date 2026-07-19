@@ -970,3 +970,20 @@ sup { font-size: 0.6em; vertical-align: super; }
   #details:not(.revealed) { transform:translateX(-50%) translateY(100%)!important; }
   .petal-rain,.gold-particles { display:none; } /* too wide on desktop */
 }
+
+/* ═══════════════════════════════════════════
+   RSVP FORM
+═══════════════════════════════════════════ */
+.rsvp-form { margin-top: 1rem; text-align: left; }
+.form-group { margin-bottom: 1.2rem; }
+.form-label { display: block; font-family: var(--font-serif); font-size: 0.95rem; color: rgba(255,255,255,0.9); margin-bottom: 0.4rem; letter-spacing: 1px; }
+.form-input, .form-select { width: 100%; padding: 0.8rem 1rem; border: 1px solid rgba(200,155,60,0.4); border-radius: 6px; font-family: var(--font-sans); font-size: 1rem; background: rgba(0,0,0,0.15); color: #fff; transition: border-color 0.3s; }
+.form-input::placeholder { color: rgba(255,255,255,0.5); }
+.form-input:focus, .form-select:focus { outline: none; border-color: var(--gold); background: rgba(0,0,0,0.25); }
+.form-select option { color: #000; }
+.rsvp-options { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-bottom: 1.2rem; }
+.rsvp-radio { position: relative; cursor: pointer; }
+.rsvp-radio input { position: absolute; opacity: 0; }
+.rsvp-radio-label { display: block; padding: 1rem; border: 2px solid rgba(200,155,60,0.3); border-radius: 8px; text-align: center; font-family: var(--font-serif); letter-spacing: 1px; text-transform: uppercase; transition: all 0.3s; background: rgba(255,255,255,0.05); color: #fff; }
+.rsvp-radio input:checked + .rsvp-radio-label { background: var(--gold); color: #000; border-color: var(--gold); font-weight: 600; }
+.rsvp-radio input[value="no"]:checked + .rsvp-radio-label { background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.4); color: #fff; }
