@@ -3,12 +3,13 @@ import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.g
 
 // TODO: Replace this with your actual Firebase config!
 export const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyBJe3trA-8I7e4dIu4EWhkdv0A1ERBH1tU",
+  authDomain: "vpk-rsvp.firebaseapp.com",
+  projectId: "vpk-rsvp",
+  storageBucket: "vpk-rsvp.firebasestorage.app",
+  messagingSenderId: "791260035268",
+  appId: "1:791260035268:web:fae45fdefeb5ffa3bc7191",
+  measurementId: "G-S7EFP194K8"
 };
 
 // Initialize Firebase only if the user has provided real keys
