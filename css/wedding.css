@@ -984,6 +984,22 @@ sup { font-size: 0.6em; vertical-align: super; }
 .rsvp-options { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-bottom: 1.2rem; }
 .rsvp-radio { position: relative; cursor: pointer; }
 .rsvp-radio input { position: absolute; opacity: 0; }
-.rsvp-radio-label { display: block; padding: 1rem; border: 1px solid rgba(200,155,60,0.3); border-radius: 8px; text-align: center; font-family: var(--font-serif); letter-spacing: 1px; text-transform: uppercase; transition: all 0.3s; background: rgba(255,255,255,0.4); color: var(--text-body); font-weight: 500; }
-.rsvp-radio input:checked + .rsvp-radio-label { background: var(--gold); color: #fff; border-color: var(--gold-dark); font-weight: 600; box-shadow: 0 4px 12px rgba(200,155,60,0.3); }
-.rsvp-radio input[value="no"]:checked + .rsvp-radio-label { background: var(--maroon); color: #fff; border-color: var(--maroon-dark); box-shadow: 0 4px 12px rgba(123,30,43,0.3); }
+.rsvp-radio-label { display: block; padding: 1rem; border: 1px solid rgba(255,255,255,0.6); border-radius: 12px; text-align: center; font-family: var(--font-serif); letter-spacing: 1px; text-transform: uppercase; transition: all 0.3s; background: rgba(255,255,255,0.4); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); box-shadow: 0 4px 15px rgba(0,0,0,0.03); color: var(--text-body); font-weight: 500; }
+.rsvp-radio input:checked + .rsvp-radio-label { background: rgba(200,155,60,0.85); color: #fff; border-color: rgba(255,255,255,0.5); font-weight: 600; box-shadow: 0 8px 25px rgba(200,155,60,0.3); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+.rsvp-radio input[value="no"]:checked + .rsvp-radio-label { background: rgba(123,30,43,0.85); color: #fff; border-color: rgba(255,255,255,0.5); box-shadow: 0 8px 25px rgba(123,30,43,0.3); }
+
+.glass-btn {
+  display:inline-flex; align-items:center; justify-content:center; gap:8px;
+  background: rgba(200,155,60,0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  color: #fff;
+  font-family:var(--font-sans); font-weight:600; font-size:14px;
+  letter-spacing:1px; text-transform:uppercase;
+  padding:14px 28px; border: 1px solid rgba(255,255,255,0.4); border-radius:var(--r-pill);
+  cursor:pointer; box-shadow:0 8px 25px rgba(200,155,60,0.3);
+  transition:all .3s var(--ease); width:100%; max-width:280px;
+}
+.glass-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(200,155,60,0.4);
+  background: rgba(200,155,60,0.95);
+}
