@@ -59,6 +59,6 @@ window.submitRSVP = async function() {
     alert('Could not send RSVP. Please try again.');
   } finally {
     btn.disabled = false;
-    btn.textContent = 'Send RSVP';
+    btn.textContent = 'Send';
   }
 };
