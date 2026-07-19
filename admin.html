@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>Admin Dashboard - RSVPs</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/wedding.css">
+  
+  <style>
+    body {
+      background: var(--ivory-deep);
+      overflow-y: auto;
+      padding: 2rem;
+    }
+    
+    .admin-container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--r-md);
+      padding: 2rem;
+      box-shadow: var(--shadow);
+    }
+    
+    .admin-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    
+    .admin-title {
+      font-family: var(--font-serif);
+      font-size: 2.5rem;
+      color: var(--maroon);
+      margin-bottom: 0.5rem;
+    }
+    
+    .stats-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    
+    .stat-card {
+      background: rgba(200,155,60,0.1);
+      border: 1px solid rgba(200,155,60,0.3);
+      padding: 1.5rem;
+      border-radius: var(--r-md);
+      text-align: center;
+    }
+    
+    .stat-value {
+      font-size: 2.5rem;
+      font-family: var(--font-serif);
+      color: var(--gold-dark);
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+    
+    .stat-label {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+    }
+    
+    .table-responsive {
+      overflow-x: auto;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+    
+    th, td {
+      padding: 1rem;
+      text-align: left;
+      border-bottom: 1px solid rgba(200,155,60,0.2);
+    }
+    
+    th {
+      font-family: var(--font-serif);
+      color: var(--maroon);
+      font-weight: 600;
+      background: rgba(200,155,60,0.05);
+    }
+    
+    td {
+      color: var(--text-body);
+    }
+    
+    .badge {
+      padding: 0.4rem 0.8rem;
+      border-radius: var(--r-pill);
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+    
+    .badge-yes {
+      background: rgba(46, 107, 77, 0.15);
+      color: var(--green);
+    }
+    
+    .badge-no {
+      background: rgba(123, 30, 43, 0.15);
+      color: var(--maroon);
+    }
+    
+    .login-overlay {
+      position: fixed;
+      inset: 0;
+      background: var(--ivory-deep);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .login-box {
+      background: var(--card-bg);
+      padding: 2.5rem;
+      border-radius: var(--r-md);
+      box-shadow: var(--shadow);
+      border: 1px solid var(--card-border);
+      text-align: center;
+      width: 90%;
+      max-width: 400px;
+    }
+    
+    .login-box input {
+      width: 100%;
+      padding: 0.8rem;
+      margin: 1rem 0;
+      border: 1px solid var(--gold);
+      border-radius: var(--r-sm);
+      font-family: var(--font-sans);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Simple Password Protection -->
+  <div class="login-overlay" id="loginOverlay">
+    <div class="login-box">
+      <h2 style="font-family: var(--font-serif); color: var(--maroon); margin-bottom: 1rem;">Admin Access</h2>
+      <p style="color: var(--text-muted); font-size: 0.9rem;">Enter the password to view RSVPs</p>
+      <input type="password" id="adminPassword" placeholder="Enter password" />
+      <button class="gold-btn" style="width: 100%;" onclick="checkPassword()">Login</button>
+      <p id="loginError" style="color: var(--maroon); font-size: 0.85rem; margin-top: 1rem; display: none;">Incorrect password</p>
+    </div>
+  </div>
+
+  <div class="admin-container">
+    <div class="admin-header">
+      <h1 class="admin-title">RSVP Dashboard</h1>
+      <div class="gold-divider" style="max-width:200px; margin: 0 auto;">
+        <div class="gold-line"></div><span class="gold-gem">✦</span><div class="gold-line"></div>
+      </div>
+    </div>
+    
+    <div id="setupWarning" style="display: none; background: #fff3cd; color: #856404; padding: 1rem; border-radius: 8px; margin-bottom: 2rem; border: 1px solid #ffeeba;">
+      <strong>Setup Required:</strong> You have not configured Firebase yet! Please edit <code>js/firebase-init.js</code> and paste your Firebase keys.
+    </div>
+
+    <div class="stats-container">
+      <div class="stat-card">
+        <div class="stat-value" id="totalRsvps">0</div>
+        <div class="stat-label">Total Submissions</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="totalGuests">0</div>
+        <div class="stat-label">Total Guests Attending</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="totalNotAttending">0</div>
+        <div class="stat-label">Not Attending</div>
+      </div>
+    </div>
+
+    <div class="table-responsive">
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Attending</th>
+            <th>Guests</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody id="rsvpTableBody">
+          <tr>
+            <td colspan="4" style="text-align: center; padding: 2rem;">Loading RSVPs...</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script type="module">
+    import { firebaseConfig, db } from './js/firebase-init.js';
+    import { collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    // Simple password protection (Password is: vpk2026)
+    window.checkPassword = function() {
+      const pwd = document.getElementById('adminPassword').value;
+      if (pwd === 'vpk2026') {
+        document.getElementById('loginOverlay').style.display = 'none';
+        initAdmin();
+      } else {
+        document.getElementById('loginError').style.display = 'block';
+      }
+    };
+    
+    document.getElementById('adminPassword').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') checkPassword();
+    });
+
+    function initAdmin() {
+      if (!db) {
+        document.getElementById('setupWarning').style.display = 'block';
+        document.getElementById('rsvpTableBody').innerHTML = '<tr><td colspan="4" style="text-align: center;">Firebase not configured</td></tr>';
+        return;
+      }
+
+      const q = query(collection(db, "rsvps"), orderBy("timestamp", "desc"));
+      
+      onSnapshot(q, (snapshot) => {
+        const tbody = document.getElementById('rsvpTableBody');
+        let totalRsvps = 0;
+        let totalGuests = 0;
+        let totalNotAttending = 0;
+        
+        if (snapshot.empty) {
+          tbody.innerHTML = '<tr><td colspan="4" style="text-align: center;">No RSVPs yet.</td></tr>';
+          updateStats(0, 0, 0);
+          return;
+        }
+
+        let html = '';
+        snapshot.forEach((doc) => {
+          const data = doc.data();
+          totalRsvps++;
+          
+          if (data.attending === 'yes') {
+            totalGuests += parseInt(data.guests) || 1;
+          } else {
+            totalNotAttending++;
+          }
+          
+          const dateStr = data.timestamp ? new Date(data.timestamp.toDate()).toLocaleString() : 'Just now';
+          const badgeClass = data.attending === 'yes' ? 'badge-yes' : 'badge-no';
+          const attendText = data.attending === 'yes' ? 'Yes' : 'No';
+          
+          html += `
+            <tr>
+              <td style="font-weight: bold;">${escapeHtml(data.name)}</td>
+              <td><span class="badge ${badgeClass}">${attendText}</span></td>
+              <td>${data.attending === 'yes' ? escapeHtml(data.guests) : '-'}</td>
+              <td style="font-size: 0.85rem; color: var(--text-muted);">${dateStr}</td>
+            </tr>
+          `;
+        });
+        
+        tbody.innerHTML = html;
+        updateStats(totalRsvps, totalGuests, totalNotAttending);
+      }, (error) => {
+        console.error("Error fetching RSVPs:", error);
+        document.getElementById('rsvpTableBody').innerHTML = `<tr><td colspan="4" style="text-align: center; color: red;">Error fetching data. Check console.</td></tr>`;
+      });
+    }
+    
+    function updateStats(rsvps, guests, noShows) {
+      document.getElementById('totalRsvps').textContent = rsvps;
+      document.getElementById('totalGuests').textContent = guests;
+      document.getElementById('totalNotAttending').textContent = noShows;
+    }
+    
+    function escapeHtml(unsafe) {
+      if (!unsafe) return '';
+      return String(unsafe)
+           .replace(/&/g, "&amp;")
+           .replace(/</g, "&lt;")
+           .replace(/>/g, "&gt;")
+           .replace(/"/g, "&quot;")
+           .replace(/'/g, "&#039;");
+    }
+  </script>
+</body>
+</html>
